@@ -1,20 +1,28 @@
 import {StatusBar} from 'expo-status-bar';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 
 export default function App() {
     return (
-        <View style={styles.container}>
-            <Text>Hello World!!!!</Text>
-            <Button title="Tap Me"/>
-        </View>
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.container}>
+                <View>
+                    <TextInput
+                        placeholder='Your course goal...'/>
+                    <Button title='Add Goal'/>
+                </View>
+                <View>
+                    <Text>List of goals...</Text>
+                </View>
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+    safeArea: {
+        flex: 1
     },
+    container: {
+        padding: 16
+    }
 });
