@@ -4,6 +4,7 @@ import {useState} from "react";
 export default function App() {
     const [enteredGoal, setEnteredGoal] = useState('')
     const [goals, setGoals] = useState([])
+    const goalsIsEmpty = goals.length === 0
 
     /**
      * Handler for handling text input changed
@@ -24,9 +25,7 @@ export default function App() {
         setGoals((currentGoals) => [...currentGoals, enteredGoal])
     }
 
-    const resetGoals = () => {
-        setGoals([])
-    }
+    const resetGoals = () => setGoals([])
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -42,17 +41,28 @@ export default function App() {
                         onPress={addGoalHandler}>
                         <Text style={styles.addGoalTextButton}>Add Goal</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.resetGoalButton}
-                        onPress={resetGoals}>
-                        <Text>Reset</Text>
-                    </TouchableOpacity>
+                    {!goalsIsEmpty && (
+                        <TouchableOpacity
+                            style={styles.resetGoalButton}
+                            onPress={resetGoals}>
+                            <Text>Reset</Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
                 <View style={styles.content}>
                     <Text style={styles.contentTitle}>Goals</Text>
-                    {goals.map((goal) => (
-                        <Text key={goal} style={styles.itemGoals}>{goal}</Text>
-                    ))}
+                    {goalsIsEmpty
+                        ? <Text style={styles.contentSubtitle}>Empty Goals</Text>
+                        : (
+                            <View>
+                                {goals.map((goal) => (
+                                    <View key={goal} style={styles.goalItemContainer}>
+                                        <Text style={styles.goalItemText}>{goal}</Text>
+                                    </View>
+                                ))}
+                            </View>
+                        )
+                    }
                 </View>
             </View>
         </SafeAreaView>
@@ -105,7 +115,19 @@ const styles = StyleSheet.create({
     addGoalTextButton: {
         color: 'white'
     },
-    itemGoals: {
-        marginVertical: 4
+    goalItemContainer: {
+        marginVertical: 4,
+        backgroundColor: '#ccc',
+        borderColor: '#ccc',
+        padding: 10,
+        borderRadius: 10,
+        borderWidth: 1,
+    },
+    goalItemText: {},
+    contentSubtitle: {
+        fontSize: 16,
+        color: 'grey',
+        marginTop: 10,
+        fontWeight: 'bold'
     }
 });
