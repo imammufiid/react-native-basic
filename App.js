@@ -1,22 +1,43 @@
-import {Button, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {useState} from "react";
 
 export default function App() {
+    const [enteredGoal, setEnteredGoal] = useState('')
+
+    /**
+     * Handler for handling text input changed
+     */
+    const goalInputHandler = (value) => {
+        setEnteredGoal(value)
+    }
+
+    /**
+     * Handler for handling click button
+     */
+    const addGoalHandler = () => {
+        if (enteredGoal === '') {
+            console.log('click empty')
+            return
+        }
+        console.log('click', enteredGoal)
+    }
+
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.inputFieldGoal}
-                        placeholder='Your course goal...'/>
+                        placeholder='Your course goal...'
+                        onChangeText={goalInputHandler}/>
                     <TouchableOpacity
                         style={styles.addGoalButton}
-                        onPress={() => {
-                        }}>
+                        onPress={addGoalHandler}>
                         <Text>Add Goal</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.content}>
-                    <Text style={styles.contentTitle}>List of goals...</Text>
+                    <Text style={styles.contentTitle}>List of goal...</Text>
                 </View>
             </View>
         </SafeAreaView>
