@@ -1,4 +1,4 @@
-import {SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useState} from "react";
 
 export default function App() {
@@ -49,24 +49,33 @@ export default function App() {
                         </TouchableOpacity>
                     )}
                 </View>
-                <View style={styles.content}>
-                    <Text style={styles.contentTitle}>Goals</Text>
+                <Text style={styles.contentTitle}>Goals</Text>
+                <ScrollView
+                    style={styles.content}
+                    bounces={!goalsIsEmpty}>
                     {goalsIsEmpty
                         ? <Text style={styles.contentSubtitle}>Empty Goals</Text>
-                        : (
-                            <View>
-                                {goals.map((goal) => (
-                                    <View key={goal} style={styles.goalItemContainer}>
-                                        <Text style={styles.goalItemText}>{goal}</Text>
-                                    </View>
-                                ))}
-                            </View>
-                        )
+                        : <ItemGoalView goals={goals}/>
                     }
-                </View>
+                </ScrollView>
             </View>
         </SafeAreaView>
     );
+}
+
+const ItemGoalView = (props) => {
+    const {goals} = props
+    const randomInt = () => Math.floor(Math.random() * 9999999)
+
+    return (
+        <View>
+            {goals.map((goal) => (
+                <View key={randomInt} style={styles.goalItemContainer}>
+                    <Text style={styles.goalItemText}>{goal}</Text>
+                </View>
+            ))}
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -91,7 +100,6 @@ const styles = StyleSheet.create({
         borderColor: '#CCCCCC',
     },
     content: {
-        marginTop: 12,
         flex: 1,
     },
     addGoalButton: {
@@ -103,7 +111,8 @@ const styles = StyleSheet.create({
     },
     contentTitle: {
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginTop: 20
     },
     resetGoalButton: {
         backgroundColor: 'red',
