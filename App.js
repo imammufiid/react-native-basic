@@ -1,4 +1,4 @@
-import {SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {useState} from "react";
 
 export default function App() {
@@ -50,30 +50,29 @@ export default function App() {
                     )}
                 </View>
                 <Text style={styles.contentTitle}>Goals</Text>
-                <ScrollView
-                    style={styles.content}
-                    bounces={!goalsIsEmpty}>
-                    {goalsIsEmpty
-                        ? <Text style={styles.contentSubtitle}>Empty Goals</Text>
-                        : <ItemGoalView goals={goals}/>
-                    }
-                </ScrollView>
+                {goalsIsEmpty
+                    ? <Text style={styles.contentSubtitle}>Empty Goals</Text>
+                    : <FlatList
+                        style={styles.content}
+                        bounces={!goalsIsEmpty}
+                        data={goals}
+                        renderItem={(itemData) =>
+                            <ItemGoalView goal={itemData.item}/>
+                        }
+                    />
+                }
             </View>
         </SafeAreaView>
     );
 }
 
 const ItemGoalView = (props) => {
-    const {goals} = props
-    const randomInt = () => Math.floor(Math.random() * 9999999)
+    const {goal} = props
 
     return (
-        <View>
-            {goals.map((goal) => (
-                <View key={randomInt} style={styles.goalItemContainer}>
-                    <Text style={styles.goalItemText}>{goal}</Text>
-                </View>
-            ))}
+        <View style={styles.goalItemContainer}>
+            {/*<Text style={styles.contentSubtitle}>Empty Goals</Text>*/}
+            <Text style={styles.goalItemText}>{goal}</Text>
         </View>
     )
 }
