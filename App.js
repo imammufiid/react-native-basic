@@ -6,13 +6,23 @@ import {GoalInput} from "./components/GoalInput";
 export default function App() {
 
     const [goals, setGoals] = useState([])
+    const [modalIsVisible, setModalIsVisible] = useState(false)
     const goalsIsEmpty = goals.length === 0
+
+    const startAddGoalHandler = () => {
+        setModalIsVisible(true)
+    }
 
     /**
      * Handler for handling click button
      */
     const addGoalHandler = (enteredGoal) => {
         setGoals((currentGoals) => [...currentGoals, enteredGoal])
+        endGoalHandler()
+    }
+
+    const endGoalHandler = () => {
+        setModalIsVisible(false)
     }
 
     const resetGoals = () => setGoals([])
@@ -26,10 +36,25 @@ export default function App() {
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.container}>
+                <View style={{flexDirection: 'row', gap: 12}}>
+                    <TouchableOpacity
+                        style={styles.addGoalButton}
+                        onPress={startAddGoalHandler}>
+                        <Text style={styles.addGoalTextButton}>Add New Goal</Text>
+                    </TouchableOpacity>
+                    {!goalsIsEmpty &&
+                        <TouchableOpacity
+                            style={styles.resetGoalButton}
+                            onPress={resetGoals}>
+                            <Text>Reset Goals</Text>
+                        </TouchableOpacity>
+                    }
+                </View>
+
                 <GoalInput
                     onAddGoal={addGoalHandler}
-                    goalsIsEmpty={goalsIsEmpty}
-                    resetGoals={resetGoals}/>
+                    visible={modalIsVisible}
+                    cancelGoal={endGoalHandler}/>
                 <Text style={styles.contentTitle}>Goals</Text>
                 {goalsIsEmpty
                     ? <Text style={styles.contentSubtitle}>Empty Goals</Text>
@@ -72,5 +97,26 @@ const styles = StyleSheet.create({
         color: 'grey',
         marginTop: 10,
         fontWeight: 'bold'
-    }
+    },
+    addGoalButton: {
+        backgroundColor: 'green',
+        height: 40,
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+        flex: 1,
+        alignItems: "center"
+    },
+    resetGoalButton: {
+        backgroundColor: 'red',
+        height: 40,
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+        flex: 1,
+        alignItems: "center"
+    },
+    addGoalTextButton: {
+        color: 'white'
+    },
 });

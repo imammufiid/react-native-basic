@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Modal, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {useState} from "react";
 
 export const GoalInput = (props) => {
@@ -6,7 +6,7 @@ export const GoalInput = (props) => {
     const [errorMessage, setErrorMessage] = useState('')
     const isErrorField = () => errorMessage !== ''
 
-    const {onAddGoal, goalsIsEmpty, resetGoals} = props
+    const {onAddGoal, visible, cancelGoal} = props
 
     /**
      * Handler for handling text input changed
@@ -25,31 +25,35 @@ export const GoalInput = (props) => {
         setEnteredGoal('')
     }
 
+
     return (
-        <View style={styles.container}>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.inputFieldGoal}
-                    placeholder='Your course goal...'
-                    value={enteredGoal}
-                    onChangeText={goalInputHandler}/>
-                <TouchableOpacity
-                    style={styles.addGoalButton}
-                    onPress={addGoalHandler}>
-                    <Text style={styles.addGoalTextButton}>Add Goal</Text>
-                </TouchableOpacity>
-                {!goalsIsEmpty && (
+        <Modal visible={visible} animationType="slide">
+            <View style={styles.container}>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.inputFieldGoal}
+                        placeholder='Your course goal...'
+                        value={enteredGoal}
+                        onChangeText={goalInputHandler}/>
+                </View>
+                {isErrorField && <Text style={styles.errorLabel}>{errorMessage}</Text>}
+                <View style={{flexDirection: 'row', gap: 12, marginTop: 12}}>
                     <TouchableOpacity
-                        style={styles.resetGoalButton}
-                        onPress={resetGoals}>
-                        <Text>Reset</Text>
+                        style={styles.addGoalButton}
+                        onPress={addGoalHandler}>
+                        <Text style={styles.addGoalTextButton}>Add Goal</Text>
                     </TouchableOpacity>
-                )}
+                    <TouchableOpacity
+                        style={styles.cancelGoalButton}
+                        onPress={cancelGoal}>
+                        <Text style={styles.cancelGoalTextButton}>Cancel</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            {isErrorField && <Text style={styles.errorLabel}>{errorMessage}</Text>}
-        </View>
+        </Modal>
     )
 }
+
 
 const styles = StyleSheet.create({
     addGoalButton: {
@@ -57,9 +61,13 @@ const styles = StyleSheet.create({
         height: 40,
         justifyContent: 'center',
         padding: 10,
-        borderRadius: 10
+        borderRadius: 10,
+        flex: 1,
+        alignItems: 'center'
     },
     container: {
+        marginTop: 60,
+        marginHorizontal: 20,
         flexDirection: 'column',
         gap: 6
     },
@@ -88,5 +96,15 @@ const styles = StyleSheet.create({
     },
     errorLabel: {
         color: 'red',
-    }
+    },
+    cancelGoalButton: {
+        backgroundColor: 'red',
+        height: 40,
+        justifyContent: 'center',
+        padding: 10,
+        borderRadius: 10,
+        flex: 1,
+        alignItems: 'center'
+    },
+    cancelGoalTextButton: {}
 })
