@@ -1,4 +1,13 @@
-import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+    FlatList, Platform,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    StatusBar as StatusBarRN
+} from 'react-native';
+import {StatusBar} from "expo-status-bar";
 import {useState} from "react";
 import {ItemGoalView} from "./components/GoalItem";
 import {GoalInput} from "./components/GoalInput";
@@ -35,6 +44,7 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.safeArea}>
+            <StatusBar style="inverted"/>
             <View style={styles.container}>
                 <View style={{flexDirection: 'row', gap: 12}}>
                     <TouchableOpacity
@@ -50,7 +60,6 @@ export default function App() {
                         </TouchableOpacity>
                     }
                 </View>
-
                 <GoalInput
                     onAddGoal={addGoalHandler}
                     visible={modalIsVisible}
@@ -78,7 +87,8 @@ export default function App() {
 
 const styles = StyleSheet.create({
     safeArea: {
-        flex: 1
+        flex: 1,
+        paddingTop: Platform.OS === 'android' ? StatusBarRN.currentHeight : 0
     },
     container: {
         padding: 16,
@@ -90,16 +100,17 @@ const styles = StyleSheet.create({
     contentTitle: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 20
+        marginTop: 20,
+        color: '#F31282'
     },
     contentSubtitle: {
         fontSize: 16,
-        color: 'grey',
+        color: '#FFF',
         marginTop: 10,
         fontWeight: 'bold'
     },
     addGoalButton: {
-        backgroundColor: 'green',
+        backgroundColor: '#B180F0',
         height: 40,
         justifyContent: 'center',
         padding: 10,

@@ -15,8 +15,8 @@ export const ItemGoalView = (props) => {
 const styles = StyleSheet.create({
     goalItemContainer: {
         marginVertical: 4,
-        backgroundColor: '#ccc',
-        borderColor: '#ccc',
+        backgroundColor: '#E4D0FF',
+        borderColor: '#E4D0FF',
         padding: 10,
         borderRadius: 10,
         borderWidth: 1,

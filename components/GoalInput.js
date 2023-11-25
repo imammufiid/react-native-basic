@@ -1,5 +1,5 @@
-import {Modal, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
-import {useState} from "react";
+import {Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {useEffect, useState} from "react";
 
 export const GoalInput = (props) => {
     const [enteredGoal, setEnteredGoal] = useState('')
@@ -7,6 +7,12 @@ export const GoalInput = (props) => {
     const isErrorField = () => errorMessage !== ''
 
     const {onAddGoal, visible, cancelGoal} = props
+
+    useEffect(() => {
+        if (visible) {
+            setErrorMessage('')
+        }
+    }, [visible])
 
     /**
      * Handler for handling text input changed
@@ -29,6 +35,7 @@ export const GoalInput = (props) => {
     return (
         <Modal visible={visible} animationType="slide">
             <View style={styles.container}>
+                <Image source={require('../assets/images/goal.png')} style={styles.image}/>
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.inputFieldGoal}
@@ -37,7 +44,7 @@ export const GoalInput = (props) => {
                         onChangeText={goalInputHandler}/>
                 </View>
                 {isErrorField && <Text style={styles.errorLabel}>{errorMessage}</Text>}
-                <View style={{flexDirection: 'row', gap: 12, marginTop: 12}}>
+                <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={styles.addGoalButton}
                         onPress={addGoalHandler}>
@@ -57,7 +64,7 @@ export const GoalInput = (props) => {
 
 const styles = StyleSheet.create({
     addGoalButton: {
-        backgroundColor: 'green',
+        backgroundColor: '#B180F0',
         height: 40,
         justifyContent: 'center',
         padding: 10,
@@ -66,10 +73,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     container: {
-        marginTop: 60,
-        marginHorizontal: 20,
+        paddingTop: 80,
+        paddingHorizontal: 20,
         flexDirection: 'column',
-        gap: 6
+        gap: 6,
+        flex: 1,
+        backgroundColor: '#311b6b',
+        alignItems: 'center',
     },
     inputContainer: {
         flexDirection: 'row',
@@ -82,23 +92,19 @@ const styles = StyleSheet.create({
         height: 40,
         padding: 10,
         borderRadius: 10,
-        borderColor: '#CCCCCC',
-    },
-    resetGoalButton: {
-        backgroundColor: 'red',
-        height: 40,
-        justifyContent: 'center',
-        padding: 10,
-        borderRadius: 10
+        borderColor: '#E4D0FF',
+        backgroundColor: '#E4D0FF',
+        color: '#120438'
     },
     addGoalTextButton: {
         color: 'white'
     },
     errorLabel: {
-        color: 'red',
+        color: '#F31282',
+        width: '100%'
     },
     cancelGoalButton: {
-        backgroundColor: 'red',
+        backgroundColor: '#F31282',
         height: 40,
         justifyContent: 'center',
         padding: 10,
@@ -106,5 +112,14 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center'
     },
-    cancelGoalTextButton: {}
+    cancelGoalTextButton: {},
+    image: {
+        width: 100,
+        height: 100,
+        margin: 20,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        gap: 12
+    }
 })
